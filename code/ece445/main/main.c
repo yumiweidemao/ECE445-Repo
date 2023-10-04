@@ -21,7 +21,7 @@ void app_main(void)
 
     while (1) {
     	ESP_LOGI("main_test", "publishing test msg to ece445/test");
-    	mqtt_service_publish("ece445/test", "Hello, litter box!", 0, 1, 1);
-    	sleep(3);
+    	mqtt_service_publish("ece445/test", "Hello, litter box!", 0, 1, 0);
+    	sleep(15);
     }
 }

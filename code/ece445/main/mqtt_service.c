@@ -1,3 +1,4 @@
+#include <string.h>
 #include "esp_log.h"
 #include "mqtt_service.h"
 
@@ -7,9 +8,17 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
 {
     ESP_LOGD(TAG, "Event dispatched from event loop base=%s, event_id=%" PRIi32, base, event_id);
 
+    esp_mqtt_event_handle_t event = event_data;
+
     switch ((esp_mqtt_event_id_t)event_id) {
     case MQTT_EVENT_CONNECTED:
         ESP_LOGI(TAG, "MQTT_EVENT_CONNECTED");
+
+        // subscribe to test topic on successful connection
+        // TODO: delete later (or change to another topic)
+        ESP_LOGI(TAG, "subscribing to ece445/testsub");
+        esp_mqtt_client_subscribe(client, "ece445/testsub", 0);
+
         break;
     case MQTT_EVENT_DISCONNECTED:
         ESP_LOGI(TAG, "MQTT_EVENT_DISCONNECTED");
@@ -25,6 +34,13 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
         break;
     case MQTT_EVENT_DATA:
         ESP_LOGI(TAG, "MQTT_EVENT_DATA");
+        ESP_LOGI(TAG, "TOPIC=%.*s", event->topic_len, event->topic);
+        ESP_LOGI(TAG, "DATA=%.*s", event->data_len, event->data);
+
+        char response[256];
+        snprintf(response, sizeof(response), "I'm ESP32, I saw your message \"%.*s\", thanks!", event->data_len, event->data);
+
+        esp_mqtt_client_publish(client, "ece445/test", response, strlen(response), 1, 0);
         break;
     case MQTT_EVENT_ERROR:
         ESP_LOGI(TAG, "MQTT_EVENT_ERROR");
