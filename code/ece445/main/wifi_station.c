@@ -12,7 +12,7 @@
 /* FreeRTOS event group to signal when we are connected*/
 static EventGroupHandle_t s_wifi_event_group;
 
-static const char *TAG = "wifi station";
+static const char *TAG = "WIFI_STATION";
 
 static int s_retry_num = 0;
 

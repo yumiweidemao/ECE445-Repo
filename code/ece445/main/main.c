@@ -15,4 +15,13 @@ void app_main(void)
     // Note: Please configure Wi-Fi credentials in sdkconfig
     // TODO: do not crash if Wi-Fi is not connected. Keep running everything locally.
     ESP_ERROR_CHECK(wifi_init_sta());
+
+    // Initialize MQTT client service
+    mqtt_service_init();
+
+    while (1) {
+    	ESP_LOGI("main_test", "publishing test msg to ece445/test");
+    	mqtt_service_publish("ece445/test", "Hello, litter box!", 0, 1, 1);
+    	sleep(3);
+    }
 }
