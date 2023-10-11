@@ -37,7 +37,7 @@ static void weight_task(void *pvParameters)
 
     	last_reading = weight_value;
 
-    	vTaskDelay(5000 / portTICK_PERIOD_MS);
+    	vTaskDelay(2500 / portTICK_PERIOD_MS);
     }
 
     vTaskDelete(NULL);
