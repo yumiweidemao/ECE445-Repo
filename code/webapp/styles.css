@@ -1,0 +1,44 @@
+body, html {
+    height: 100%;
+    margin: 0;
+}
+  
+#background {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background-color: #00AAff;
+    z-index: 0;
+    transition: left 1s ease-in-out;
+}
+
+.container {
+    position: relative;
+    z-index: 1;
+}
+
+.rake-effect #background {
+    left: 0;
+}
+
+.rake-effect-back #background {
+    left: -100%;
+}
+
+.usage, .raking-history, .odor-level, .btn {
+    margin-bottom: 20px;
+}
+
+#odorLevel {
+    font-size: 2rem; /* Adjust the size as needed */
+}
+
+#rakeButton {
+    background-color: orange; /* Change button background color to orange */
+    color: white; /* Change text color to white for better readability */
+    margin: 0 auto; /* Center the button */
+    display: block; /* Make the button a block element to enable centering with auto margins */
+}
