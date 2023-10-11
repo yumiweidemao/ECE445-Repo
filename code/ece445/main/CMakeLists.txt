@@ -2,7 +2,7 @@
 # for more information about component CMakeLists.txt files.
 
 idf_component_register(
-    SRCS main.c wifi_station.c mqtt_service.c         # list the source files of this component
+    SRCS main.c wifi_station.c mqtt_service.c rake_eventgroup.c motor.c odor.c         # list the source files of this component
     INCLUDE_DIRS include/        # optional, add here public include directories
     PRIV_INCLUDE_DIRS   # optional, add here private include directories
     REQUIRES            # optional, list the public requirements (component names)

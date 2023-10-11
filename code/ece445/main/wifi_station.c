@@ -8,14 +8,14 @@
 */
 
 #include "wifi_station.h"
+#include "mqtt_service.h"
 
 /* FreeRTOS event group to signal when we are connected*/
 static EventGroupHandle_t s_wifi_event_group;
 
-static const char *TAG = "WIFI_STATION";
+static const char *TAG = "wifi-station";
 
 static int s_retry_num = 0;
-
 
 static void wifi_event_handler(void* arg, esp_event_base_t event_base,
                                 int32_t event_id, void* event_data)
@@ -23,7 +23,7 @@ static void wifi_event_handler(void* arg, esp_event_base_t event_base,
     if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_START) {
         esp_wifi_connect();
     } else if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_DISCONNECTED) {
-        if (s_retry_num < EXAMPLE_ESP_MAXIMUM_RETRY) {
+        if (s_retry_num < EXAMPLE_ESP_MAXIMUM_RETRY || 1) { // always retry
             esp_wifi_connect();
             s_retry_num++;
             ESP_LOGI(TAG, "retry to connect to the AP");
@@ -36,6 +36,8 @@ static void wifi_event_handler(void* arg, esp_event_base_t event_base,
         ESP_LOGI(TAG, "got ip:" IPSTR, IP2STR(&event->ip_info.ip));
         s_retry_num = 0;
         xEventGroupSetBits(s_wifi_event_group, WIFI_CONNECTED_BIT);
+        ESP_LOGI(TAG, "Wi-Fi connected, starting MQTT client service");
+        mqtt_service_init();
     }
 }
 
@@ -108,3 +110,20 @@ wifi_init_status_t wifi_init_sta(void)
 
     return WIFI_INIT_STATUS_SUCCESS;
 }
+
+static void wifi_init_task(void *pvParameters)
+{
+    wifi_init_sta();
+    vTaskDelete(NULL);
+}
+
+void start_wifi_init_task()
+{
+    xTaskCreate(wifi_init_task,          // Task function
+                "wifi_init_task",        // Task name
+                8192,                    // Stack size (in words)
+                NULL,                    // Task input parameter
+                5,                       // Task priority
+                NULL);                   // Task handle (not needed)
+}
+

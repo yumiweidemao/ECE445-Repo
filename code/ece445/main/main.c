@@ -1,5 +1,15 @@
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+#include "esp_system.h"
+#include "esp_log.h"
+
 #include "mqtt_service.h"
 #include "wifi_station.h"
+#include "rake_eventgroup.h"
+#include "motor.h"
+#include "odor.h"
+
+static const char *TAG = "app-main";
 
 void app_main(void)
 {
@@ -11,17 +21,18 @@ void app_main(void)
     }
     ESP_ERROR_CHECK(ret);
 
-    // Initialize Wi-Fi station-mode connection.
-    // Note: Please configure Wi-Fi credentials in sdkconfig
-    // TODO: do not crash if Wi-Fi is not connected. Keep running everything locally.
-    ESP_ERROR_CHECK(wifi_init_sta());
+    // Initialize Wi-Fi connection and MQTT client
+    start_wifi_init_task();
 
-    // Initialize MQTT client service
-    mqtt_service_init();
+    // Initialize rake event group
+    rake_eventgroup_init();
+
+    // Start other tasks
+    start_motor_task();
+    start_odor_task();
 
     while (1) {
-    	ESP_LOGI("main_test", "publishing test msg to ece445/test");
-    	mqtt_service_publish("ece445/test", "Hello, litter box!", 0, 1, 0);
-    	sleep(15);
+    	ESP_LOGI(TAG, "Hello!");
+    	sleep(10);
     }
 }

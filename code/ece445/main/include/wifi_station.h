@@ -57,6 +57,7 @@
 #define WIFI_CONNECTED_BIT BIT0
 #define WIFI_FAIL_BIT      BIT1
 
+
 typedef enum {
 	WIFI_INIT_STATUS_SUCCESS,
 	WIFI_INIT_STATUS_FAIL,
@@ -66,6 +67,7 @@ typedef enum {
 
 /* Function declarations */
 wifi_init_status_t wifi_init_sta(void);
+void start_wifi_init_task(void);
 
 
 #endif /* __WIFI_STATION_H__ */
