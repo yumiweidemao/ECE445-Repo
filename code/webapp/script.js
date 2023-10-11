@@ -123,7 +123,7 @@ function addRakingMessage(message) {
   li.textContent = message;
   rakingList.prepend(li);
 
-  // Keeping only last 5 messages
+  // Keeping only last 3 messages
   while (rakingList.children.length > 3) {
     rakingList.removeChild(rakingList.lastChild);
   }
@@ -166,15 +166,11 @@ function onMessageArrived(message) {
   }
 }
 
-// Create a client instance
 const client = new Paho.MQTT.Client("mqtt.eclipseprojects.io", Number(443), "/mqtt", "LitterBoxController");
 
-// set callback handlers
 client.onConnectionLost = (responseObject) => {
   console.log("Connection Lost: "+responseObject.errorMessage);
 }
-
 client.onMessageArrived = onMessageArrived;
 
-// connect the client
 client.connect({onSuccess: onConnect, useSSL: true});

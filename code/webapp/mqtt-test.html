@@ -49,45 +49,32 @@
 <script type="text/javascript">
     var client = new Paho.MQTT.Client("mqtt.eclipseprojects.io", 443, "/mqtt", "clientId" + new Date().getTime()); // Add unique ID using timestamp
 
-    // Set callback handlers
     client.onConnectionLost = onConnectionLost;
     client.onMessageArrived = onMessageArrived;
 
-    // Connect the client
     client.connect({onSuccess:onConnect, useSSL: true});
 
-    // Called when the client connects
     function onConnect() {
       console.log("Connected to the broker");
       subscribe();
     }
 
-    // Called when the client loses its connection
     function onConnectionLost(responseObject) {
       if (responseObject.errorCode !== 0) {
         console.log("onConnectionLost:"+responseObject.errorMessage);
       }
     }
 
-    // This array will hold the last 10 messages
     var messages = [];
 
-    // Called when a message arrives
     function onMessageArrived(message) {
-        console.log("onMessageArrived:" + message.payloadString);
-
-        // Get the current date and time
         var now = new Date();
-
-        // Format the timestamp
         var timestamp = ('0' + now.getHours()).slice(-2) + ':' +
             ('0' + now.getMinutes()).slice(-2) + ':' +
             ('0' + now.getSeconds()).slice(-2);
 
-        // Create a new message string with topic, message, and timestamp
         var newMessage = message.payloadString + ' [' + message.destinationName + ' '+ timestamp + ']';
 
-        // Add new message to the beginning of the array
         messages.unshift(newMessage);
 
         // If more than 10 messages, remove the oldest one
