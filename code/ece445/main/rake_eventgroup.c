@@ -4,8 +4,6 @@
 
 EventGroupHandle_t rake_event_group;
 
-
-
 void rake_eventgroup_init() {
 	rake_event_group = xEventGroupCreate();
 }

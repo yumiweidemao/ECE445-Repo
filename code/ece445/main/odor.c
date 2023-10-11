@@ -8,6 +8,7 @@ typedef uint16_t odor_value_t;
 
 static odor_value_t read_odor_value() {
 	// TODO: read odor value & adjust odor threshold
+
 	return (odor_value_t)0x04;
 }
 
@@ -32,8 +33,8 @@ static void odor_task(void *pvParameters)
 
 void start_odor_task()
 {
-    xTaskCreate(odor_task,          // Task function
-                "odor_task",        // Task name
+    xTaskCreate(odor_task,           // Task function
+                "odor_task",         // Task name
                 2048,                // Stack size (in words)
                 NULL,                // Task input parameter
                 4,                   // Task priority

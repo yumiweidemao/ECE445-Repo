@@ -8,6 +8,7 @@
 #include "rake_eventgroup.h"
 #include "motor.h"
 #include "odor.h"
+#include "weight.h"
 
 static const char *TAG = "app-main";
 
@@ -30,9 +31,10 @@ void app_main(void)
     // Start other tasks
     start_motor_task();
     start_odor_task();
+    start_weight_task();
 
     while (1) {
     	ESP_LOGI(TAG, "Hello!");
-    	sleep(10);
+    	sleep(30);
     }
 }
