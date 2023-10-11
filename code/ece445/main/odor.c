@@ -8,8 +8,9 @@ typedef uint16_t odor_value_t;
 
 static odor_value_t read_odor_value() {
 	// TODO: read odor value & adjust odor threshold
-
-	return (odor_value_t)0x04;
+	static uint16_t cnt;
+	static uint16_t arr[3] = {0x02, 0x03, 0x04};
+	return (odor_value_t)arr[(cnt++)%3];
 }
 
 static void odor_task(void *pvParameters)
