@@ -1,7 +1,93 @@
 const usageList = document.getElementById('usageList');
 const rakingList = document.getElementById('rakingList');
 const odorLevel = document.getElementById('odorLevel');
-const body = document.body;
+
+const ctx = document.getElementById('usageChart').getContext('2d');
+
+const usageData = {
+    labels: [],
+    datasets: [{
+        label: 'Usage Time (seconds)',
+        data: [],
+        borderColor: 'green',
+        backgroundColor: 'green',
+        pointRadius: 5,
+        fill: false
+    }]
+};
+
+const usageChart = new Chart(ctx, {
+  type: 'line',
+  data: usageData,
+  options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+          x: {
+              type: 'time',
+              position: 'bottom',
+              grid: {
+                  drawOnChartArea: false
+              },
+              ticks: {
+                  source: 'data',
+                  maxRotation: 45, 
+                  minRotation: 45,
+                  callback: function(value) {
+                      return moment(value).format('HH:mm:ss MMM DD');
+                  }
+              }
+          },
+          y: {
+              beginAtZero: false,
+              title: {
+                  display: true,
+                  text: 'Usage Time [s]'
+              },
+              grid: {
+                  drawOnChartArea: false
+              },
+              ticks: {
+                  suggestedMax: () => {
+                    const max = Math.max(...usageData.datasets[0].data);
+                    return max + max * 0.2;
+                  },
+              }
+          }
+      },
+      elements: {
+          point: {
+              radius: 5
+          },
+          line: {
+              tension: 0.4
+          }
+      },
+      plugins: {
+          legend: {
+              display: false
+          },
+      }
+  }
+});
+
+function addDataToChart(timestamp, value) {
+  // Limit to 10 data points
+  if (usageData.labels.length >= 10) {
+      usageData.labels.shift();
+      usageData.datasets[0].data.shift();
+  }
+  
+  usageData.labels.push(timestamp);
+  usageData.datasets[0].data.push(value);
+
+  usageChart.update();
+}
+
+function formatDateTime(date) {
+  const options = { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+  return new Intl.DateTimeFormat('en-US', options).format(date);
+}
 
 function addUsageMessage(message) {
   const li = document.createElement('li');
@@ -9,9 +95,25 @@ function addUsageMessage(message) {
   li.textContent = message;
   usageList.prepend(li);
 
+  const seconds = parseFloat(message.split(' ')[2]);
+  
+  const now = new Date();
+  const timestamp = now.getTime();
+  
+  if (!isNaN(seconds) && isFinite(seconds)) {
+      usageData.labels.push(timestamp);
+      usageData.datasets[0].data.push(seconds);
+      if (usageData.labels.length > 10) {
+          usageData.labels.shift();
+          usageData.datasets[0].data.shift();
+      }
+      
+      usageChart.update();
+  }
+
   // Keeping only last 10 messages
   while (usageList.children.length > 10) {
-    usageList.removeChild(usageList.lastChild);
+      usageList.removeChild(usageList.lastChild);
   }
 }
 
@@ -22,32 +124,57 @@ function addRakingMessage(message) {
   rakingList.prepend(li);
 
   // Keeping only last 5 messages
-  while (rakingList.children.length > 5) {
+  while (rakingList.children.length > 3) {
     rakingList.removeChild(rakingList.lastChild);
   }
+}
+
+function rake() {
+  message = new Paho.MQTT.Message("rake");
+  message.destinationName = "ece445/rake";
+  client.send(message);
+
+  const rakeButton = document.getElementById('rakeButton');
+  rakeButton.classList.add('rake-effect');
+  
+  setTimeout(() => {
+      rakeButton.classList.remove('rake-effect');
+  }, 900);
 }
 
 function updateOdorLevel(level) {
   odorLevel.textContent = level;
 }
 
-function rake() {
-  body.classList.add('rake-effect');
-
-  setTimeout(() => {
-    body.classList.remove('rake-effect');
-    body.classList.add('rake-effect-back');
-  }, 1000);
-
-  setTimeout(() => {
-    body.classList.remove('rake-effect-back');
-  }, 2000);
-
-  addRakingMessage('Raking initiated...'); // Example
+function onConnect() {
+  console.log("onConnect");
+  client.subscribe("ece445/rh");
+  client.subscribe("ece445/odor");
+  client.subscribe("ece445/weight");
 }
 
-// Example usage
-addUsageMessage('Message 1');
-addUsageMessage('Message 2');
-addRakingMessage('Rake 1');
-updateOdorLevel('Low');
+function onMessageArrived(message) {
+  const currentTime = new Date();
+  const timeString = currentTime.toLocaleTimeString() + ', ' + currentTime.toDateString();
+
+  if (message.destinationName === "ece445/rh") {
+    addRakingMessage(`Raking completed at ${timeString}`);
+  } else if (message.destinationName === "ece445/odor") {
+    updateOdorLevel(`${message.payloadString}`);
+  } else if (message.destinationName === "ece445/weight") {
+    addUsageMessage(`Used for ${message.payloadString} seconds at ${timeString}`);
+  }
+}
+
+// Create a client instance
+const client = new Paho.MQTT.Client("mqtt.eclipseprojects.io", Number(80), "/mqtt", "LitterBoxController");
+
+// set callback handlers
+client.onConnectionLost = (responseObject) => {
+  console.log("Connection Lost: "+responseObject.errorMessage);
+}
+
+client.onMessageArrived = onMessageArrived;
+
+// connect the client
+client.connect({onSuccess: onConnect});

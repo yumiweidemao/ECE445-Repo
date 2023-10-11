@@ -20,14 +20,6 @@ body, html {
     z-index: 1;
 }
 
-.rake-effect #background {
-    left: 0;
-}
-
-.rake-effect-back #background {
-    left: -100%;
-}
-
 .usage, .raking-history, .odor-level, .btn {
     margin-bottom: 20px;
 }
@@ -36,9 +28,44 @@ body, html {
     font-size: 2rem; /* Adjust the size as needed */
 }
 
+#usageChart {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+}
+
 #rakeButton {
+    position: relative;
+    overflow: hidden;
+    z-index: 2;
     background-color: orange; /* Change button background color to orange */
-    color: white; /* Change text color to white for better readability */
+    color: rgb(255, 255, 255); /* Change text color to white for better readability */
     margin: 0 auto; /* Center the button */
     display: block; /* Make the button a block element to enable centering with auto margins */
+}
+
+#rakeButton span {
+    position: relative;
+    z-index: 3;
+}
+
+#rakeButton::after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: blue;
+    z-index: 1;
+    transition: left 0.75s ease-in-out;
+}
+
+#rakeButton.rake-effect::after {
+    left: 0;
+}
+
+#rakeButton.rake-effect-back::after {
+    left: -100%;
 }
