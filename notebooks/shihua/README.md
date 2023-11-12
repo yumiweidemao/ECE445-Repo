@@ -38,3 +38,16 @@
 
 - Picked up the completed litter box from machine shop and tested the motor functions in lab using the +12V DC power supply. The two motors are connected in reverse directions by machine shop, so we need to be careful when connecting the motors to H-bridge (the input to one motor should be reversed to the other)
 - Confirmed that the motor will likely have enough torque to push the sand, next step is to wait for the PCB, and try to control the motor and read encoder values using the MCU.
+
+## 10/30-11/5
+
+- Nothing particular. Still waiting for the components to come in order to perform further tests.
+
+## 11/6-11/12
+
+- Components have arrived and Jonathan is working on soldering and PCB testing. I'm waiting for the completion of the PCB.
+- Michael finished the code for odor sensor (ADC module). I tested the functionality of the odor sensor using Scopy. I generated a 500mV DC signal and tried reading it from the ESP32C3. The expected value is ~620. The actual reading was about 700, which was good enough and showed that the ADC module worked correctly. Next step is to solder the odor sensor to the PCB and test using real ammonia.
+![ADC test screenshot](adc_test_screenshot.png "ADC test screenshot")
+- Completed motor control logic. When rake() is triggered, GPIO6 & GPIO7 will go through the following cycle to conduct a full raking:
+**on/off(5s) --> off/off(1.5s) --> off/on(5s) --> off/off**
+  This was also tested to work correctly using an oscilloscope. Next step is to test on the PCB and use voltmeter to see if output is correct.
