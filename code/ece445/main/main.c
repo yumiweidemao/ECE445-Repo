@@ -10,8 +10,6 @@
 #include "odor.h"
 #include "weight.h"
 
-static const char *TAG = "app-main";
-
 void app_main(void)
 {
     //Initialize NVS
@@ -32,9 +30,4 @@ void app_main(void)
     start_motor_task();
     start_odor_task();
     start_weight_task();
-
-    while (1) {
-    	ESP_LOGI(TAG, "Hello!");
-    	sleep(30);
-    }
 }

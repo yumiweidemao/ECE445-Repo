@@ -1,22 +1,27 @@
 #include "odor.h"
 #include "esp_log.h"
+#include "driver/adc.h"
+
+#define INTERVAL_MS		3000
 
 const static char* TAG = "odor";
 
-// TODO: change odor_value_t to appropriate type
-typedef uint16_t odor_value_t;
+typedef int odor_value_t;
+
+static void init_adc() {
+    adc1_config_width(ADC_WIDTH_BIT_12);
+    adc1_config_channel_atten(ADC1_CHANNEL_2, ADC_ATTEN_DB_11);
+}
 
 static odor_value_t read_odor_value() {
-	// TODO: read odor value & adjust odor threshold
-	static uint16_t cnt;
-	static uint16_t arr[3] = {0x02, 0x03, 0x04};
-	return (odor_value_t)arr[(cnt++)%3];
+    return (odor_value_t)adc1_get_raw(ADC1_CHANNEL_2);
 }
 
 static void odor_task(void *pvParameters)
 {
     while (1) {
     	odor_value_t odor_value = read_odor_value();
+    	ESP_LOGI(TAG, "odor value:%d", odor_value);
 
     	if (odor_value > (odor_value_t)ODOR_HI_THRESHOLD) {
     		xEventGroupSetBits(rake_event_group, TOO_STINKY_BIT);
@@ -27,13 +32,14 @@ static void odor_task(void *pvParameters)
     		mqtt_service_publish("ece445/odor", "Low");
     	}
 
-    	vTaskDelay(10000 / portTICK_PERIOD_MS);
+    	vTaskDelay(INTERVAL_MS / portTICK_PERIOD_MS);
     }
     vTaskDelete(NULL);
 }
 
 void start_odor_task()
 {
+	init_adc();
     xTaskCreate(odor_task,           // Task function
                 "odor_task",         // Task name
                 2048,                // Stack size (in words)
