@@ -1,8 +1,11 @@
 # Michael Worklog
 
 9/11 - 9/17
+
 First TA meeting 
+
 Project Proposal
+
 Conversation with Machine Shop
 
 9/18 - 9/24
