@@ -11,36 +11,33 @@
 - Second TA meeting
 - Second conversation with Machine Shop
 - CAD modeling of the Litter Box
-- Working on Design Document
 - Revising Proposal
 
 ## 09/25-10/01
-
-- Ordered 12V DC motors and learn about encoders
-- Worked on design document
-- Purchased ESP32C3 dev kits for prototyping
-- Installed and configured ESP-IDF SDK and Eclipse IDE for software dev
+- Third TA meeting
+- Finished the design document
+- Drew the three-view drawing of the cat litter box, including the main dimensions and position of the comb
 
 ## 10/02-10/08
 
-- Completed design review, switching from Bluetooth to Wi-Fi
-- Finalized on software structure, made a software block diagram:
-![software block diagram](software-block-diagram.jpg "Block diagram")
+- Finished design review 
+- Did research on odor sensors, chose and ordered MiCS-5914 as the sensor to detect ammonia concentration
 
 ## 10/09-10/15
 
-- Made a fully functional [web application](https://yumiweidemao.github.io/ece445-web-app/) running on a Github server. This includes UI and MQTT protocol functionalities. It can communicate with the ESP32C3 dev kit over the Internet.
-- Completed code skeleton, hardware interaction to be added. (code can be found in [commit history](https://github.com/yumiweidemao/ECE445-Repo/commits/main))
+- Did research on ESP32 programming
+- Set up ESP-IDF SDK and Eclipse IDE
 
 ## 10/16-10/22
 
-- Started learning about the HX711 ADC serial interface and how to read weight value based on the sensor values
-- Started writing code on weight sensor submodule, modified the read_weight_sensor() function so that it now utilizes GPIO4 and GPIO5 to communicate to HX711 through SCK and DOUT. Testing and calibration still needed in the future.
-
+- Confirmed the connection method of each pin of the odor sensor on the PCB
+- Conducted tests on the LM317 voltage regulator using an oscilloscope to successfully obtain 3.3V and 5V DC outputs
+- Rewrited Design Document
 ## 10/23-10/29
 
-- Picked up the completed litter box from machine shop and tested the motor functions in lab using the +12V DC power supply. The two motors are connected in reverse directions by machine shop, so we need to be careful when connecting the motors to H-bridge (the input to one motor should be reversed to the other)
-- Confirmed that the motor will likely have enough torque to push the sand, next step is to wait for the PCB, and try to control the motor and read encoder values using the MCU.
+- Researched and identified the ideal load resistance range (820 to 1164 ohms) for our project based on mathematical calculations.
+- Integrated the MiCS-5914 odor sensor with a breadboard and used SCOPY for voltage measurements. Exposed to ammonia in a humid environment, the sensor's output remained safely below 3.3V, confirming the ESP32 microcontroller's compatibility.
+- Finished Individual Progress Report
 
 ## 10/30-11/5
 
@@ -48,4 +45,4 @@
 
 ## 11/6-11/12
 
-- Michael finished the code for odor sensor (ADC module).
+- finished the code for odor sensor (ADC module).
