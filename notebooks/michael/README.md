@@ -41,8 +41,6 @@
 
 ## 10/30-11/5
 
-- Nothing particular. Still waiting for the components to come in order to perform further tests.
-
 ## 11/6-11/12
 
 - finished the code for odor sensor (ADC module).
