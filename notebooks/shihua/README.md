@@ -55,7 +55,7 @@
 ## 11/13-11/19
 
 - Tested motor control subsystem functionality by connecting 110V AC to the PCB, connecting the motors to H-bridge output, connecting the ESP32C3 dev kit to my phone hotspot, and pressing 'rake' button on the phone web app. The motor successfully completed a single back-and-forth rake, confirming the success of the power & motor subsystems as well as relevant parts of the communication subsystem.
-- Tested weight sensor by using an off-the-shelf HX711 ADC module, but weight value could not be correctly read. It could be a software issue, I'm still working on inspecting the code and debugging using an oscilloscope.
+- Tested weight sensor using an off-the-shelf HX711 ADC module, but weight value could not be correctly read. It could be a software issue, I'm still working on inspecting the code and debugging using an oscilloscope.
 
 ## 11/20-11/26
 
