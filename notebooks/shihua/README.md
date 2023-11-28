@@ -59,4 +59,9 @@
 
 ## 11/20-11/26
 
+- Tested the GPIO behavior when ESP32C3 is in download mode. GPIO 6 & 7 floats when in download mode, which is pretty dangerous because it would be possible to cause a short circuit in the H-bridge circuit. After identifying the issue, external 10k pull-down resistors were added to the GPIO pins to ensure safety.
+
 ## 11/27-12/3
+
+- After PCB completion, the functionalities were tested. We were able to load a program to the ESP32 microcontroller on the PCB through D+ D- pins (instead of USB-UART bridge that was originally designed to be used). The weight sensor and the motor subsystem worked fine. We couldn't get the odor sensor to work correctly so we gave up because there was little time left.
+- Changed raking auto-triggering mechanism from odor-triggered to usage-triggered. Now, raking will be triggered after 6 seconds when the weight sensor detects that the cat has left the litter box.
