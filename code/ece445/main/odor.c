@@ -2,7 +2,7 @@
 #include "esp_log.h"
 #include "driver/adc.h"
 
-#define INTERVAL_MS		3000
+#define INTERVAL_MS		5000
 
 const static char* TAG = "odor";
 
@@ -10,11 +10,11 @@ typedef int odor_value_t;
 
 static void init_adc() {
     adc1_config_width(ADC_WIDTH_BIT_12);
-    adc1_config_channel_atten(ADC1_CHANNEL_2, ADC_ATTEN_DB_11);
+    adc1_config_channel_atten(ADC1_CHANNEL_3, ADC_ATTEN_DB_11);
 }
 
 static odor_value_t read_odor_value() {
-    return (odor_value_t)adc1_get_raw(ADC1_CHANNEL_2);
+    return (odor_value_t)adc1_get_raw(ADC1_CHANNEL_3);
 }
 
 static void odor_task(void *pvParameters)
@@ -24,7 +24,6 @@ static void odor_task(void *pvParameters)
     	ESP_LOGI(TAG, "odor value:%d", odor_value);
 
     	if (odor_value > (odor_value_t)ODOR_HI_THRESHOLD) {
-    		xEventGroupSetBits(rake_event_group, TOO_STINKY_BIT);
     		mqtt_service_publish("ece445/odor", "High");
     	} else if (odor_value > (odor_value_t)ODOR_MED_THRESHOLD) {
     		mqtt_service_publish("ece445/odor", "Medium");

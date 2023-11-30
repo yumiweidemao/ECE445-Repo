@@ -4,38 +4,29 @@
 
 #define MOTOR1_FORWARD_PIN		GPIO_NUM_6		// GPIO6
 #define MOTOR1_BACKWARD_PIN		GPIO_NUM_7		// GPIO7
-#define MOTOR2_FORWARD_PIN		GPIO_NUM_19		// GPIO19
-#define MOTOR2_BACKWARD_PIN		GPIO_NUM_18		// GPIO18
-#define ENCODER_PIN_A			GPIO_NUM_0		// GPIO0
-#define ENCODER_PIN_B			GPIO_NUM_1		// GPIO1
+//#define ENCODER_PIN_A			GPIO_NUM_0		// GPIO0
+//#define ENCODER_PIN_B			GPIO_NUM_1		// GPIO1
 
-#define GPIO_OUTPUT_PIN_SEL  ((1ULL<<MOTOR1_FORWARD_PIN) | (1ULL<<MOTOR1_BACKWARD_PIN) | 		\
-							  (1ULL<<MOTOR2_FORWARD_PIN) | (1ULL<<MOTOR2_BACKWARD_PIN))
+#define GPIO_OUTPUT_PIN_SEL  ((1ULL<<MOTOR1_FORWARD_PIN) | (1ULL<<MOTOR1_BACKWARD_PIN))
 #define GPIO_INPUT_PIN_SEL  ((1ULL<<ENCODER_PIN_A) | (1ULL<<ENCODER_PIN_B))
 
-#define MOTOR_DELAY_MS			5000
+#define MOTOR_DELAY_MS			27000
 
 const static char* TAG = "motor";
 
 static void forward() {
 	gpio_set_level(MOTOR1_FORWARD_PIN, 1);
-	gpio_set_level(MOTOR2_FORWARD_PIN, 1);
 	gpio_set_level(MOTOR1_BACKWARD_PIN, 0);
-	gpio_set_level(MOTOR2_BACKWARD_PIN, 0);
 }
 
 static void backward() {
 	gpio_set_level(MOTOR1_FORWARD_PIN, 0);
-	gpio_set_level(MOTOR2_FORWARD_PIN, 0);
 	gpio_set_level(MOTOR1_BACKWARD_PIN, 1);
-	gpio_set_level(MOTOR2_BACKWARD_PIN, 1);
 }
 
 static void stop() {
 	gpio_set_level(MOTOR1_FORWARD_PIN, 0);
-	gpio_set_level(MOTOR2_FORWARD_PIN, 0);
 	gpio_set_level(MOTOR1_BACKWARD_PIN, 0);
-	gpio_set_level(MOTOR2_BACKWARD_PIN, 0);
 }
 
 static void rake() {
