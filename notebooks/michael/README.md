@@ -16,7 +16,9 @@
 ## 09/25-10/01
 - Third TA meeting
 - Finished the design document
-- Drew the three-view drawing of the cat litter box, including the main dimensions and position of the comb（图片1）
+- Drew the three-view drawing of the cat litter box, including the main dimensions and position of the comb
+
+![Mechanical Design](mechanical_design.jpg "Mechanical Design")
 
 ## 10/02-10/08
 
@@ -30,7 +32,10 @@
 
 ## 10/16-10/22
 
-- Confirmed the connection method of each pin of the odor sensor on the PCB（图片2）
+- Confirmed the connection method of each pin of the odor sensor on the PCB
+
+![Odor Sensor](odor_sensor.jpg "Odor Sensor")
+
 - Conducted tests on the LM317 voltage regulator using an oscilloscope to successfully obtain 3.3V and 5V DC outputs
 - Rewrited Design Document
   
