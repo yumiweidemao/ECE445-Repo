@@ -45,15 +45,15 @@ Sent out order for components
 
 ## 11/6 - 11/12
 
-Soldered:
-  power system
-    Had issues with LM317, resistor values over 1k ohms skew calculations for output voltage
-    Had to trial and error our resistors to get voltage within spec for MCU
-  H-Bridge
-    Accidentally tested board with power before finishing soldering. Shorted 5V and GND
-  ESP32
+-Soldered:
+ - power system
+  -  Had issues with LM317, resistor values over 1k ohms skew calculations for output voltage
+   - Had to trial and error our resistors to get voltage within spec for MCU
+  -H-Bridge
+   - Accidentally tested board with power before finishing soldering. Shorted 5V and GND
+  -ESP32
 
-Decided to give up on USB to UART Bridge
+-Decided to give up on USB to UART Bridge
 
 ## 11/13 - 11/19
 
