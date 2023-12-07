@@ -41,6 +41,8 @@
 
 ## 10/30-11/5
 
+- Bought the ammonia liquid for sensor testing.
+
 ## 11/6-11/12
 
 - finished the code for odor sensor (ADC module).
